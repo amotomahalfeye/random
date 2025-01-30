@@ -98,10 +98,7 @@ const remove = (index: number): void => {
                             <v-btn
                                 :flat="true"
                                 class="float-right"
-                                @click="
-                                    remove(index)
-                                    $event.stopPropagation()
-                                "
+                                @click="(event: MouseEvent) => { remove(index); event.stopPropagation(); }"
                                 :icon="isHovering ? 'mdi-close' : 'undefined'"
                             />
                         </v-card-title>
