@@ -60,11 +60,11 @@ const remove = (index: number): void => {
 <template>
     <div class="fixed-btn">
         <v-btn
-            size="x-large"
             v-if="nums.length !== 0"
-            v-on:click="roll_all"
+            size="x-large"
             prepend-icon="mdi-reload"
             variant="flat"
+            @click="roll_all"
         >
             RE-ROLL ALL
         </v-btn>
@@ -73,6 +73,8 @@ const remove = (index: number): void => {
     <v-container :fluid="true">
         <v-row justify="center" class="ma-16">
             <v-col
+                v-for="(num, index) in nums"
+                :key="index as number"
                 xs="12"
                 sm="6"
                 md="4"
@@ -80,8 +82,6 @@ const remove = (index: number): void => {
                 xl="2"
                 xxl="1"
                 class="equal-height-col"
-                v-for="(num, index) in nums"
-                :key="index as number"
                 style="justify-content: center; display: flex"
             >
                 <v-hover v-slot="{ isHovering, props }">
@@ -89,17 +89,22 @@ const remove = (index: number): void => {
                         :class="{ 'on-hover': isHovering, 'text-center': true }"
                         :flat="true"
                         :border="false"
-                        v-on:click="roll(num)"
                         height="200px"
                         v-bind="props"
                         width="200px"
+                        @click="roll(num)"
                     >
                         <v-card-title>
                             <v-btn
                                 :flat="true"
                                 class="float-right"
-                                @click="(event: MouseEvent) => { remove(index); event.stopPropagation(); }"
                                 :icon="isHovering ? 'mdi-close' : 'undefined'"
+                                @click="
+                                    (event: MouseEvent) => {
+                                        remove(index)
+                                        event.stopPropagation()
+                                    }
+                                "
                             />
                         </v-card-title>
                         <v-card-text class="text-h1 ma-6">
@@ -124,22 +129,12 @@ const remove = (index: number): void => {
                 <v-card :flat="true" height="200px" class="align-center d-flex" width="200px">
                     <v-container>
                         <v-row class="ma-2" justify="center">
-                            <v-btn
-                                size="x-large"
-                                :flat="true"
-                                variant="outlined"
-                                v-on:click="addNum6"
-                            >
+                            <v-btn size="x-large" :flat="true" variant="outlined" @click="addNum6">
                                 Add Num 1-6
                             </v-btn>
                         </v-row>
                         <v-row class="ma-2" justify="center">
-                            <v-btn
-                                size="x-large"
-                                :flat="true"
-                                variant="outlined"
-                                v-on:click="addNum10"
-                            >
+                            <v-btn size="x-large" :flat="true" variant="outlined" @click="addNum10">
                                 Add Num 0-9
                             </v-btn>
                         </v-row>
