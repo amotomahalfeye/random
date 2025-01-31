@@ -92,25 +92,24 @@ const remove = (index: number): void => {
                         height="200px"
                         v-bind="hoverProps"
                         width="200px"
+                        class="position-relative d-flex flex-column justify-center align-center"
                         @click="roll(num)"
                     >
-                        <v-card-title>
-                            <v-btn
-                                :flat="true"
-                                class="float-right"
-                                :icon="isHovering ? 'mdi-close' : 'undefined'"
-                                @click="
-                                    (event: MouseEvent) => {
-                                        remove(index)
-                                        event.stopPropagation()
-                                    }
-                                "
-                            />
-                        </v-card-title>
-                        <v-card-text class="text-h1 ma-6">
+                        <v-btn
+                            :flat="true"
+                            class="position-absolute top-0 right-0"
+                            :icon="isHovering ? 'mdi-close' : 'undefined'"
+                            @click="
+                                (event: MouseEvent) => {
+                                    remove(index)
+                                    event.stopPropagation()
+                                }
+                            "
+                        />
+                        <v-card-text class="d-flex justify-center align-center text-h1">
                             {{ num.value }}
                         </v-card-text>
-                        <v-card-subtitle class="ma-6 text-center">
+                        <v-card-subtitle class="text-center floating-subtitle">
                             {{ num.min }}-{{ num.max }}
                         </v-card-subtitle>
                     </v-card>
@@ -152,5 +151,11 @@ const remove = (index: number): void => {
     right: 0;
     margin: 20px;
     z-index: 10;
+}
+.floating-subtitle {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
 }
 </style>
