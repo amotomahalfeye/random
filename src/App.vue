@@ -84,13 +84,13 @@ const remove = (index: number): void => {
                 class="equal-height-col"
                 style="justify-content: center; display: flex"
             >
-                <v-hover v-slot="{ isHovering, props }">
+                <v-hover v-slot="{ isHovering, props: hoverProps }">
                     <v-card
                         :class="{ 'on-hover': isHovering, 'text-center': true }"
                         :flat="true"
                         :border="false"
                         height="200px"
-                        v-bind="props"
+                        v-bind="hoverProps"
                         width="200px"
                         @click="roll(num)"
                     >
