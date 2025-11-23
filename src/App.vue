@@ -22,7 +22,12 @@ const add_num = (min: number, max: number): void => {
         max,
         value: Math.floor(Math.random() * (max - min + 1)) + min
     })
-    roll(nums.value[length - 1])
+    const lastNum = nums.value[length - 1]
+    if (lastNum) {
+        roll(lastNum)
+    } else {
+        console.error("Unable to add new number")
+    }
 }
 
 const addNum6 = (): void => add_num(1, 6)
@@ -38,6 +43,10 @@ const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout
 
 const _roll = async (index: number): Promise<void> => {
     const num = nums.value[index]
+    if (!num) {
+        console.error("Unable to roll")
+        return
+    }
     for (let i = 0; i < 25 + index * 25; i++) {
         num.value = Math.floor(Math.random() * (num.max - num.min + 1)) + num.min
         await sleep(10)
