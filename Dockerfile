@@ -12,6 +12,7 @@ COPY tsconfig.json /home/app
 COPY tsconfig.node.json /home/app
 COPY tsconfig.app.json /home/app
 COPY index.html /home/app
+COPY env.d.ts /home/app
 COPY src /home/app/src
 RUN npm run build
 
