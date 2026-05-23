@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [0.3.0] - 2026-05-23
+
+### Changed
+
+- Updated the dependencies
+
 ## [0.2.1] - 2026-03-01
 
 ### Changed
