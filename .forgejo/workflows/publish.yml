@@ -1,0 +1,71 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: node-lts
+    container: docker.io/library/node:26.5.0@sha256:926d6cafec97f338577041890465522f70fe74aa6fe4b021a4fd7f87a5996b25
+    steps:
+      - name: Checkout
+        uses: https://github.com/actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Setup Docker Client
+        run: |
+          apt update
+          apt install -y --no-install-recommends ca-certificates curl
+          install -m 0755 -d /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+          chmod a+r /etc/apt/keyrings/docker.asc
+          tee /etc/apt/sources.list.d/docker.sources <<EOF
+          Types: deb
+          URIs: https://download.docker.com/linux/debian
+          Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+          Components: stable
+          Architectures: $(dpkg --print-architecture)
+          Signed-By: /etc/apt/keyrings/docker.asc
+          EOF
+          apt-get update
+          apt-get install -y --no-install-recommends docker-ce-cli docker-compose-plugin
+      - name: Build docker packages
+        run: docker build -t app_image:latest .
+      - name: Publish
+        run: |
+          FULL_URL="${{ env.FORGEJO_SERVER_URL }}"
+          IMAGE_URL=${FULL_URL:8}/${{ env.FORGEJO_REPOSITORY }}
+          VERSION=$(node -p "require('./package.json').version")
+          docker login ${{ env.FORGEJO_SERVER_URL }} -u ${{ env.FORGEJO_REPOSITORY_OWNER }} -p ${{ secrets.PACKAGE_CREATE_TOKEN }}
+
+          if [[ ! "$VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Invalid VERSION $VERSION"
+            exit 1
+          fi
+          
+          major=${BASH_REMATCH[1]}
+          minor=${BASH_REMATCH[2]}
+          patch=${BASH_REMATCH[3]}
+          
+          docker login ${{ env.FORGEJO_SERVER_URL }} -u ${{ env.FORGEJO_REPOSITORY_OWNER }} -p ${{ secrets.PACKAGE_CREATE_TOKEN }}
+          docker tag app_image:latest $IMAGE_URL:v$major.$minor.$patch
+          docker push $IMAGE_URL:v$major.$minor.$patch
+          docker tag app_image:latest $IMAGE_URL:v$major.$minor
+          docker push $IMAGE_URL:v$major.$minor
+          
+          if [[ ! "$major" == "0" ]]; then
+            docker tag app_image:latest $IMAGE_URL:v$major
+            docker push $IMAGE_URL:v$major
+          fi
+          
+          docker tag app_image:latest $IMAGE_URL:latest
+          docker push $IMAGE_URL:latest
+      - name: Tag commit
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          git config user.name "${{ env.FORGEJO_REPOSITORY_OWNER }}"
+          git config user.email amotomahalfeye@protonmail.com
+          git tag "v${VERSION}"
+          echo "${{ env.FORGEJO_REPOSITORY_OWNER }}"
+          git push origin "v${VERSION}"
