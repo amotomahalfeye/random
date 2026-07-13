@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM docker.io/library/node:26.5.0@sha256:926d6cafec97f338577041890465522f70fe74aa6fe4b021a4fd7f87a5996b25
 
 RUN mkdir -p /home/app
 
@@ -16,7 +16,7 @@ COPY env.d.ts /home/app
 COPY src /home/app/src
 RUN npm run build
 
-FROM nginx:alpine
+FROM docker.io/library/nginx:1.31.2@sha256:ec4ed8b5299e5e90694af7750eb6dffd2627317d30544d056b0371f8082f7bce
 
 WORKDIR /usr/share/nginx/html
 
