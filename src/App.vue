@@ -115,7 +115,9 @@ const remove = (index: number): void => {
                                 }
                             "
                         />
-                        <v-card-text class="d-flex justify-center align-center text-display-large h1-text">
+                        <v-card-text
+                            class="d-flex justify-center align-center text-display-large h1-text"
+                        >
                             {{ num.value }}
                         </v-card-text>
                         <v-card-subtitle class="text-center floating-subtitle">
