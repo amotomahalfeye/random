@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [0.3.1] - 2026-07-13
+
+### Added
+
+- Publish action
+- Reproducible builds
+
+### Changed
+
+- Updated the dependencies
+
 ## [0.3.0] - 2026-05-23
 
 ### Changed
