@@ -5,7 +5,7 @@ on:
 
 jobs:
   publish:
-    runs-on: node-lts
+    runs-on: debian-latest
     container: docker.io/library/node:26.5.0@sha256:926d6cafec97f338577041890465522f70fe74aa6fe4b021a4fd7f87a5996b25
     steps:
       - name: Checkout
