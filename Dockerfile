@@ -1,4 +1,4 @@
-FROM docker.io/library/node:26.5.0@sha256:0473e7dc433a1310f436edee02aa79737ec78a4b345433ab0963d4a256f9ad85
+FROM docker.io/library/node:26.13.1@sha256:f8e5d4bb28fa55c74f1345166a082a10b7c68f22304350c1ce0d18358ae94996
 
 RUN mkdir -p /home/app
 
