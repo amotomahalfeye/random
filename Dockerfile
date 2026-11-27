@@ -16,7 +16,7 @@ COPY env.d.ts /home/app
 COPY src /home/app/src
 RUN npm run build
 
-FROM docker.io/library/nginx:1.31.4@sha256:b34848eff6db786b6b1282d3a9c3fd0b5563dfb6d261df4923378b419e0d24f0
+FROM docker.io/library/nginx:1.31.10@sha256:a786635fd3c7b9a57ea089ab1c0713e510f3b548b65fe699ce3d59e4a926b37e
 
 WORKDIR /usr/share/nginx/html
 
